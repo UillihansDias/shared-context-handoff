@@ -1,0 +1,141 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Shared Context stage handoff contract",
+  "type": "object",
+  "required": [
+    "current_stage",
+    "next_stage",
+    "goal",
+    "constraints",
+    "verifiers"
+  ],
+  "properties": {
+    "current_stage": {
+      "$ref": "#/$defs/stage"
+    },
+    "next_stage": {
+      "$ref": "#/$defs/stage"
+    },
+    "goal": {
+      "type": "object",
+      "required": [
+        "objective",
+        "target_artifacts"
+      ],
+      "properties": {
+        "objective": {
+          "$ref": "#/$defs/nonblank"
+        },
+        "target_artifacts": {
+          "$ref": "#/$defs/nonemptyStrings"
+        }
+      },
+      "additionalProperties": false
+    },
+    "constraints": {
+      "type": "object",
+      "required": [
+        "negative_scope",
+        "limits"
+      ],
+      "properties": {
+        "negative_scope": {
+          "$ref": "#/$defs/nonemptyStrings"
+        },
+        "limits": {
+          "$ref": "#/$defs/nonemptyStrings"
+        }
+      },
+      "additionalProperties": false
+    },
+    "verifiers": {
+      "type": "object",
+      "required": [
+        "pre_ship",
+        "post_ship"
+      ],
+      "properties": {
+        "pre_ship": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "argv"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/nonblank"
+              },
+              "argv": {
+                "$ref": "#/$defs/nonemptyStrings"
+              },
+              "cwd": {
+                "$ref": "#/$defs/nonblank"
+              },
+              "timeout_seconds": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 3600
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "post_ship": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "observable",
+              "success_condition"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/$defs/nonblank"
+              },
+              "observable": {
+                "$ref": "#/$defs/nonblank"
+              },
+              "success_condition": {
+                "$ref": "#/$defs/nonblank"
+              }
+            },
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "stage": {
+      "type": "string",
+      "enum": [
+        "SIGNAL",
+        "TRIAGE",
+        "PLAN",
+        "EXECUTE",
+        "VALIDATE",
+        "SHIP",
+        "MONITOR",
+        "AUTOMATE"
+      ]
+    },
+    "nonblank": {
+      "type": "string",
+      "pattern": "\\S"
+    },
+    "nonemptyStrings": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/nonblank"
+      }
+    }
+  }
+}

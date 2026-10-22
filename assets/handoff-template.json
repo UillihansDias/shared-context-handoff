@@ -1,0 +1,29 @@
+{
+  "current_stage": "SIGNAL",
+  "next_stage": "TRIAGE",
+  "goal": {
+    "objective": "",
+    "target_artifacts": []
+  },
+  "constraints": {
+    "negative_scope": [],
+    "limits": []
+  },
+  "verifiers": {
+    "pre_ship": [
+      {
+        "id": "",
+        "argv": [],
+        "cwd": "",
+        "timeout_seconds": 300
+      }
+    ],
+    "post_ship": [
+      {
+        "id": "",
+        "observable": "",
+        "success_condition": ""
+      }
+    ]
+  }
+}
